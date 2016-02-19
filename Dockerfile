@@ -13,11 +13,14 @@ RUN apt-get update && apt-get install -y -q --no-install-recommends \
         python \
         rsync \
         software-properties-common \
+        git-core \
         wget \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Bitcore
 RUN npm install -g bitcore
 ADD bitcore-node.json /root/.bitcore/
+RUN git clone --depth=1 https://github.com/bitaccess/insight-api.git
+RUN cp -rf insight-api/lib/* /usr/local/lib/node_modules/bitcore/node_modules/insight-api/lib/
 EXPOSE 3001 8333
 ENTRYPOINT "bitcored"
